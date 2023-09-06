@@ -8,20 +8,20 @@ import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class ExelReaderService {
 
-    public void readFile(String fileLocation) throws IOException {
-        Workbook workbook = loadWorkbook(fileLocation);
+
+    public void readFile(String fileLocation) {
+        Workbook workbook;
+        workbook = loadWorkbook(fileLocation);
         var sheetIterator = workbook.sheetIterator();
         while (sheetIterator.hasNext()) {
             Sheet sheet = sheetIterator.next();
@@ -30,16 +30,20 @@ public class ExelReaderService {
         }
     }
 
-    private Workbook loadWorkbook(String fileLocation) throws IOException {
+    private Workbook loadWorkbook(String fileLocation) {
         var extension = fileLocation.substring(fileLocation.lastIndexOf(".") + 1).toLowerCase();
-        var file = new FileInputStream(new File(fileLocation));
-        switch (extension) {
-            case "xls":
-                return new HSSFWorkbook(file);
-            case "xlsx":
-                return new XSSFWorkbook(file);
-            default:
-                throw new RuntimeException("Unknown Excel file extension: " + extension);
+
+        try (FileInputStream file = new FileInputStream(fileLocation)) {
+            switch (extension) {
+                case "xls":
+                    return new HSSFWorkbook(file);
+                case "xlsx":
+                    return new XSSFWorkbook(file);
+                default:
+                    throw new RuntimeException("Unknown Excel file extension: " + extension);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
