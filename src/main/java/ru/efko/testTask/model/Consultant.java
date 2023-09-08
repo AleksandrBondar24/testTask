@@ -1,9 +1,6 @@
 package ru.efko.testTask.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,16 +10,15 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Table(name = "consultants")
+@Builder
 public class Consultant {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long consultantId;
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private Long id;
+    private String userFullName;
+    private Double numberOfTask;
     @ManyToOne
     @JoinColumn(name = "structure_id", referencedColumnName = "id")
     private Structure structure;
-    private Double numberOfTask;
 }
