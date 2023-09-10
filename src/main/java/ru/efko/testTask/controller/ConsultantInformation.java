@@ -7,20 +7,20 @@ import lombok.*;
 @Getter
 @ToString
 @NoArgsConstructor
-public class ConsultantExelDto {
+public class ConsultantInformation {
     private int idRow;
-    private String name;
+    private DivisionDto division;
+    private DirectionDto direction;
+    private OfficeDto office;
+    private SubDivisionDto subDivision;
+    private UserDto user;
     private Double numberOfTask;
-    private Division division;
-    private Direction direction;
-    private Office office;
-    private SubDivision subDivision;
 
     @Getter
     @Setter
     @ToString
     @AllArgsConstructor
-    public static class Division {
+    public static class DivisionDto {
         private int idRow;
         private String name;
     }
@@ -29,7 +29,7 @@ public class ConsultantExelDto {
     @Setter
     @ToString
     @AllArgsConstructor
-    public static class Direction {
+    public static class DirectionDto {
         private int idRow;
         private String name;
     }
@@ -38,7 +38,7 @@ public class ConsultantExelDto {
     @Setter
     @ToString
     @AllArgsConstructor
-    public static class Office {
+    public static class OfficeDto {
         private int idRow;
         private String name;
     }
@@ -47,7 +47,16 @@ public class ConsultantExelDto {
     @Setter
     @ToString
     @AllArgsConstructor
-    public static class SubDivision {
+    public static class SubDivisionDto {
+        private int idRow;
+        private String name;
+    }
+
+    @Getter
+    @Setter
+    @ToString
+    @AllArgsConstructor
+    public static class UserDto {
         private int idRow;
         private String name;
     }
