@@ -1,4 +1,4 @@
-package ru.efko.testTask.controller;
+package ru.efko.testTask.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -5,8 +5,9 @@ import lombok.var;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.efko.testTask.controller.ConsultantInformation;
+import ru.efko.testTask.dto.ConsultantInformation;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,10 +19,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ExelReaderService {
 
-    public List<ConsultantInformation> readFile(String fileLocation) {
-        Workbook workbook;
-        workbook = loadWorkbook(fileLocation);
-        Sheet sheet = workbook.getSheetAt(0);
+    @Value("${path.file}")
+    private String path;
+
+    public List<ConsultantInformation> readFile() {
+        var workbook = loadWorkbook(path);
+        var sheet = workbook.getSheetAt(0);
         return processSheet(sheet);
     }
 

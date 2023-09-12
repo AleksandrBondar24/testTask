@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.efko.testTask.dto.ConsultantDto;
 import ru.efko.testTask.service.ConsultantService;
 
 import java.util.List;
@@ -19,15 +20,15 @@ public class ConsultantController {
     private final ConsultantService service;
 
     @PostMapping
-    public void createConsultant() {
-        service.saveConsultant();
-        log.debug("Считан файл xlsx и добавлен в БД");
+    public List<ConsultantDto> createConsultant() {
+        log.info("Считан файл xlsx и добавлен в БД");
+        return service.saveConsultant();
     }
 
     @GetMapping
     public List<ConsultantDto> getAllConsultant() {
         List<ConsultantDto> consultantDto = service.getAllConsultant();
-        log.debug("Получен список консультантов со структорой подразделений: {}", consultantDto);
+        log.info("Получен список консультантов со структорой подразделений: {}", consultantDto);
         return consultantDto;
     }
 }

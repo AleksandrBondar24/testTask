@@ -1,7 +1,7 @@
 package ru.efko.testTask.service.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.efko.testTask.controller.ConsultantInformation;
+import ru.efko.testTask.dto.ConsultantInformation;
 import ru.efko.testTask.model.User;
 
 @UtilityClass

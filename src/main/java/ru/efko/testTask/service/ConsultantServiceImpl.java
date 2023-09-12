@@ -3,8 +3,9 @@ package ru.efko.testTask.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.efko.testTask.controller.ConsultantDto;
-import ru.efko.testTask.controller.ConsultantInformation;
+import org.springframework.transaction.annotation.Transactional;
+import ru.efko.testTask.dto.ConsultantDto;
+import ru.efko.testTask.dto.ConsultantInformation;
 import ru.efko.testTask.model.*;
 import ru.efko.testTask.repository.*;
 import ru.efko.testTask.service.mapper.*;
@@ -22,12 +23,11 @@ public class ConsultantServiceImpl implements ConsultantService {
     private final SubDivisionRepository subDivisionRepository;
     private final UserRepository userRepository;
     private final ExelReaderService service;
-    private final Sort sort = Sort.by("numberOfTask").descending();
 
+    @Transactional
     @Override
-    public void saveConsultant() {
-        final String path = "C:/Users/alexb/Downloads/data.xlsx";
-        final List<ConsultantInformation> consultantsInf = service.readFile(path);
+    public List<ConsultantDto> saveConsultant() {
+        final List<ConsultantInformation> consultantsInf = service.readFile();
         final List<Division> divisionList = saveDivision(consultantsInf);
         final List<Direction> directionList = saveDirection(consultantsInf);
         final List<Office> officeList = saveOffice(consultantsInf);
@@ -39,11 +39,16 @@ public class ConsultantServiceImpl implements ConsultantService {
                 .map(ConsultantMapper::toConsultant)
                 .map(user -> setModelsIds(user, divisionList, directionList, officeList, subDivisionList, userList))
                 .collect(Collectors.toList());
-        repository.saveAll(consultants);
+        return repository.saveAll(consultants)
+                .stream()
+                .map(ConsultantMapper::toConsultantDto)
+                .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ConsultantDto> getAllConsultant() {
+        final Sort sort = Sort.by("numberOfTask").descending();
         return repository.findAll(sort)
                 .stream()
                 .map(ConsultantMapper::toConsultantDto)
